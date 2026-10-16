@@ -1,0 +1,132 @@
+import pandas as pd
+
+# Load products dataset
+df = pd.read_csv("file_name.csv")
+
+
+# ==========================================================
+# 1. DATA STRUCTURE ANALYSIS
+# ==========================================================
+
+print("========== DATA STRUCTURE ANALYSIS ==========")
+
+# Dataset shape
+print("\nDataset Shape:")
+print(df.shape)
+
+# Column names
+print("\nColumn Names:")
+print(df.columns.tolist())
+
+# Data types
+print("\nData Types:")
+print(df.dtypes)
+
+# Dataset information
+print("\nDataset Information:")
+df.info()
+
+# Duplicate rows
+print("\nDuplicate Rows:")
+print(df.duplicated().sum())
+
+# Missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Unique values
+print("\nUnique Values:")
+print(df.nunique())
+
+
+# ==========================================================
+# 2. DATA PROFILING
+# ==========================================================
+
+print("\n========== DATA PROFILING ==========")
+
+# Numerical profile
+print("\nNumerical Data Profile:")
+print(df.describe())
+
+
+# Categorical profile
+print("\nCategorical Data Profile:")
+print(df.describe(include="object"))
+
+
+# ==========================================================
+# 3. COLUMN-WISE PROFILE
+# ==========================================================
+
+print("\n========== COLUMN-WISE PROFILE ==========")
+
+profile = pd.DataFrame({
+    "Column": df.columns,
+    "Data_Type": df.dtypes.astype(str),
+    "Non_Null_Count": df.notnull().sum(),
+    "Missing_Count": df.isnull().sum(),
+    "Unique_Count": df.nunique()
+})
+
+print(profile)
+
+
+# ==========================================================
+# 4. CATEGORICAL VALUE DISTRIBUTION
+# ==========================================================
+
+print("\n========== CATEGORICAL VALUE DISTRIBUTION ==========")
+
+categorical_columns = df.select_dtypes(include="object").columns
+
+for column in categorical_columns:
+    print(f"\n--- {column} ---")
+    print(df[column].value_counts())
+
+
+# ==========================================================
+# 5. NUMERICAL COLUMN PROFILING
+# ==========================================================
+
+print("\n========== NUMERICAL COLUMN PROFILING ==========")
+
+numeric_columns = df.select_dtypes(include="number").columns
+
+for column in numeric_columns:
+
+    print(f"\n--- {column} ---")
+
+    print("Minimum:", df[column].min())
+    print("Maximum:", df[column].max())
+    print("Mean:", df[column].mean())
+    print("Median:", df[column].median())
+    print("Standard Deviation:", df[column].std())
+    print("Unique Values:", df[column].nunique())
+
+
+# ==========================================================
+# 6. DATE STRUCTURE ANALYSIS
+# ==========================================================
+
+print("\n========== DATE STRUCTURE ANALYSIS ==========")
+
+date_columns = ["last_purchase_date"]
+
+for column in date_columns:
+
+    date_series = pd.to_datetime(
+        df[column],
+        errors="coerce"
+    )
+
+    print(f"\n--- {column} ---")
+    print("Minimum Date:", date_series.min())
+    print("Maximum Date:", date_series.max())
+    print("Unique Dates:", date_series.nunique())
+    print("Invalid/Missing Dates:", date_series.isnull().sum())
+
+
+
+
+
